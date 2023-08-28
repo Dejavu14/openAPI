@@ -1,0 +1,428 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Todolist Restful API",
+    "description": "OpenAPI for Todolist Restful API",
+    "termsOfService": "https://www.kukabataku.com",
+    "contact": {
+      "name": "Wariman",
+      "email": "wariman.prog14@gmail.com",
+      "url": "https://www.kukabataku.com"
+    },
+    "license": {
+      "name": "APACHE 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": [
+    {
+      "description": "OpenAPI for Todolist Restful API",
+      "url": "https://{environtment}.kukabataku.com/api/v1",
+      "variables": {
+        "environtment": {
+          "description": "Server Environtment",
+          "default": "dev",
+          "enum": [
+            "dev",
+            "qa",
+            "prod"
+          ]
+        }
+      }
+    }
+  ],
+  "externalDocs": {
+    "description": "Youtube kukabataku",
+    "url": "https://www.youtube.com/c/Kukabataku"
+  },
+  "paths": {
+    "/todolist": {
+      "get": {
+        "summary": "Get all todolist",
+        "description": "Get all active todolist by default",
+        "parameters": [
+          {
+            "name": "include_done",
+            "in": "query",
+            "required": false,
+            "description": "Is include done todolist",
+            "schema": {
+              "type": "boolean",
+              "nullable": true,
+              "default": false
+            }
+          },
+          {
+            "name": "name123",
+            "in": "query",
+            "required": false,
+            "description": "Filter todolist by name",
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "examples": {
+              "java": {
+                "description": "Example name Java",
+                "value": "Java"
+              },
+              "php": {
+                "description": "Example name PHP",
+                "value": "PHP"
+              },
+              "golang": {
+                "description": "Example name Golang",
+                "value": "GOLANG"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succes get all todolist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "priority": {
+                        "type": "number",
+                        "format": "int32"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new todolist",
+        "description": "Create new todolist to database",
+        "requestBody": {
+          "200": {
+            "description": "Success create todolist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "priority": {
+                      "type": "number",
+                      "format": "int32"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "java": {
+                    "description": "Succes Create Java Todolist",
+                    "value": {
+                      "id": 1,
+                      "name": "Java",
+                      "priority": 3,
+                      "tags": [
+                        "Java",
+                        "Programming"
+                      ]
+                    }
+                  },
+                  "php": {
+                    "description": "Succes Create php Todolist",
+                    "value": {
+                      "id": 2,
+                      "name": "PHP",
+                      "priority": 5,
+                      "tags": [
+                        "PHP",
+                        "Programming"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "required": true
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true,
+                    "default": 1
+                  },
+                  "tags": {
+                    "type": "array",
+                    "required": false,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "required": true
+                    },
+                    "priority": {
+                      "type": "integer",
+                      "format": "int32",
+                      "default": 1,
+                      "required": true
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "java": {
+                  "description": "Example create todolist Java",
+                  "value": {
+                    "name": "Java",
+                    "priority": 3,
+                    "tags": [
+                      "Java",
+                      "Programming"
+                    ]
+                  }
+                },
+                "php": {
+                  "description": "Example create todolist PHP",
+                  "value": {
+                    "name": "PHP",
+                    "priority": 5,
+                    "tags": [
+                      "PHP",
+                      "Programming"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/todolist/{todolistId}": {
+      "put": {
+        "summary": "Update existing todolist",
+        "description": "Update existing todolist in database",
+        "parameters": [
+          {
+            "name": "todolistId",
+            "in": "path",
+            "required": true,
+            "description": "Todolist id for Update",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "examples": {
+              "java": {
+                "description": "Example create todolist Java",
+                "value": {
+                  "name": "Java",
+                  "priority": 3,
+                  "tags": [
+                    "Java",
+                    "Programming"
+                  ]
+                }
+              },
+              "php": {
+                "description": "Example create todolist PHP",
+                "value": {
+                  "name": "PHP",
+                  "priority": 5,
+                  "tags": [
+                    "PHP",
+                    "Programming"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "required": true
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true,
+                    "default": 1
+                  },
+                  "tags": {
+                    "type": "array",
+                    "required": false,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "required": true
+                    },
+                    "priority": {
+                      "type": "integer",
+                      "format": "int32",
+                      "default": 1,
+                      "required": true
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "java": {
+                  "description": "Example create todolist Java",
+                  "value": "1"
+                },
+                "php": {
+                  "description": "Example create todolist PHPa",
+                  "value": "2"
+                }
+              }
+            }
+          }
+        },
+        "200": {
+          "description": "Success create todolist",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "number",
+                    "format": "int32"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "java": {
+                  "description": "Succes Update Java Todolist",
+                  "value": {
+                    "id": 1,
+                    "name": "Java",
+                    "priority": 3,
+                    "tags": [
+                      "Java",
+                      "Programming"
+                    ]
+                  }
+                },
+                "php": {
+                  "description": "Succes Update php Todolist",
+                  "value": {
+                    "id": 2,
+                    "name": "PHP",
+                    "priority": 5,
+                    "tags": [
+                      "PHP",
+                      "Programming"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete existing todolist",
+        "description": "Delete existing todoq in database",
+        "parameters": [
+          {
+            "name": "todolistId",
+            "in": "path",
+            "required": true,
+            "description": "Todolist id for delete",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete todolist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "description": "Succes delete todolist",
+                    "value": {
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
